@@ -1,0 +1,11 @@
+MODEL EVALUATION SUMMARY
+==================================================
+
+Model                   Accuracy  Precision   Recall   F1-score
+---------------------------------------------------------------
+  Logistic Regression     96.59%     96.69%   96.59%     96.57%
+  Decision Tree           93.41%     93.56%   93.41%     93.38%
+  Random Forest           98.64%     98.67%   98.64%     98.63% << SELECTED
+  KNN                     96.82%     96.92%   96.82%     96.78%
+
+Selected model: Random Forest

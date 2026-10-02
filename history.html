@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>History — 🌱 CropAdvisor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand">🌱 CropAdvisor</div>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="/">Home</a></li>
+    <li><a href="/predict">Predict</a></li>
+    <li><a href="/history" class="active">History</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1>Prediction History</h1>
+    <p>Previous crop recommendations stored in the local database.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    {% if predictions %}
+      <p class="history-count">Showing {{ predictions|length }} most recent prediction(s).</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date &amp; Time</th>
+              <th>Crop</th>
+              <th>Confidence</th>
+              <th>N</th>
+              <th>P</th>
+              <th>K</th>
+              <th>Temp (°C)</th>
+              <th>Humidity (%)</th>
+              <th>pH</th>
+              <th>Rainfall (mm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in predictions %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ row.timestamp }}</td>
+              <td><span class="crop-tag">{{ row.crop | capitalize }}</span></td>
+              <td>
+                <span class="conf-badge {% if row.confidence >= 0.8 %}conf-high{% elif row.confidence >= 0.5 %}conf-mid{% else %}conf-low{% endif %}">
+                  {{ (row.confidence * 100) | round(1) }}%
+                </span>
+              </td>
+              <td>{{ row.N }}</td>
+              <td>{{ row.P }}</td>
+              <td>{{ row.K }}</td>
+              <td>{{ row.temperature }}</td>
+              <td>{{ row.humidity }}</td>
+              <td>{{ row.ph }}</td>
+              <td>{{ row.rainfall }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <h3>No predictions yet</h3>
+        <p>Make your first crop recommendation to see it here.</p>
+        <a href="/predict" class="btn btn-primary">Get Started</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<footer class="footer">
+  <p>🌱 Crop Recommendation System &nbsp;|&nbsp; ML Internship Project &nbsp;|&nbsp; Built with Python, Flask &amp; Scikit-learn</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
